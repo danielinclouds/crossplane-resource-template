@@ -1,0 +1,10 @@
+apiVersion: meta.pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: mybucket
+spec:
+  crossplane:
+    version: ">=v1.7.1"
+  dependsOn:
+  - provider: crossplane/provider-gcp
+    version: ">=v0.21.0"

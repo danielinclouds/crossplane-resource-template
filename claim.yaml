@@ -1,0 +1,6 @@
+apiVersion: dkcs.me/v1alpha1
+kind: MyBucket
+metadata:
+  name: test-k32kh234-1q345hk
+spec: 
+  location: EU

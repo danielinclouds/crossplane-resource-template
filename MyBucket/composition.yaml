@@ -1,0 +1,44 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: mybucket
+spec:
+  compositeTypeRef:
+    apiVersion: dkcs.me/v1alpha1
+    kind: XMyBucket
+  resources:
+
+
+    - name: bucket
+      base:
+        apiVersion: storage.gcp.crossplane.io/v1alpha3
+        kind: Bucket
+        metadata:
+          annotations:
+            crossplane.io/external-name: ""
+        spec:
+          location: ""
+          storageClass: MULTI_REGIONAL
+          providerConfigRef:
+            name: provider-gcp
+          deletionPolicy: Delete
+      patches:
+        - type: PatchSet
+          patchSetName: externalName
+        - type: PatchSet
+          patchSetName: location
+
+
+  patchSets:
+  - name: externalName
+    patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: "spec.claimRef.name"
+      toFieldPath:   "metadata.annotations[crossplane.io/external-name]"
+
+  - name: location
+    patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.location
+      toFieldPath:   spec.location
+
